@@ -16,7 +16,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'Mall of Karor',
+
+    'logo' => 'assets/images/logo.png',
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +57,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => 'http://localhost',
 
     'asset_url' => env('ASSET_URL'),
 
@@ -70,7 +72,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Karachi',
 
     /*
     |--------------------------------------------------------------------------

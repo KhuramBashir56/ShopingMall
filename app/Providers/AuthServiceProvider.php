@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Gates\AdminGate;
+use App\Gates\ManagerGate;
+use App\Gates\UserGate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,11 +19,10 @@ class AuthServiceProvider extends ServiceProvider
         //
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot(): void
     {
-        //
+        Gate::define('admin', [AdminGate::class, 'verified_admin_role']);
+        Gate::define('manager', [ManagerGate::class, 'verified_manager_role']);
+        Gate::define('user', [UserGate::class, 'verified_user_role']);
     }
 }
