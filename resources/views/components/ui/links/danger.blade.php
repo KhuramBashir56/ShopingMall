@@ -1,0 +1,4 @@
+@props(['title'])
+<a {{ $attributes }} wire:navigate class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-5 py-2.5" title="{{ $title }}">
+    {{ $title }}
+</a>

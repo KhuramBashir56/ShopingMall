@@ -6,7 +6,7 @@
         <h1 class="text-6xl font-bold w-fit my-8 mx-auto"> {{ __('Register') }}</h1>
     </header>
     <section class="xl:container mx-auto my-8">
-        <div class=" max-w-md mx-auto border px-4 py-2 shadow-md rounded-md">
+        <div class=" max-w-md mx-auto border px-4 py-4 shadow-md rounded-md">
             <h3 class="text-orange-500 text-center mb-4">{{ __('Please fill out the form to register your account.') }}</h3>
             <form method="POST" action="{{ route('register.store') }}">
                 @csrf
@@ -35,10 +35,10 @@
                     @enderror
                 </x-ui.form.label>
                 <label for="terms" class="flex items-center justify-between mt-4 text-sm text-gray-800">
-                    <span class="">
+                    <span class="block">
                         <x-ui.form.check-box :for="__('terms')" required />
                         {{ __('I accept the') }}
-                        <a class="underline hover:text-orange-500" href="{{ route('login.index') }}">
+                        <a wire:navigate class="underline hover:text-orange-500" href="#">
                             {{ __('terms and conditions') }}
                         </a>
                     </span>
@@ -50,7 +50,7 @@
                     <x-ui.buttons.primary type="submit" :title="__('Register')" />
                 </div>
             </form>
-            <a class="underline text-sm text-gray-800 hover:text-orange-500 w-fit block mx-auto mt-4" href="{{ route('login.index') }}">
+            <a wire:navigate href="{{ route('login.index') }}" class="underline text-sm text-gray-800 hover:text-orange-500 w-fit block mx-auto mt-4">
                 {{ __('Already Registered?') }}
             </a>
         </div>

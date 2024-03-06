@@ -42,7 +42,7 @@
                         </div>
                         @cannot('user')
                             <li>
-                                <a href="#" class="block py-2 px-3 hover:bg-orange-500 hover:text-white transition-colors duration-300">{{ __('My Dashboard') }}</a>
+                                <a href="{{ route('dashboard') }}" class="block py-2 px-3 hover:bg-orange-500 hover:text-white transition-colors duration-300">{{ __('My Dashboard') }}</a>
                             </li>
                         @endcannot
                         <li>

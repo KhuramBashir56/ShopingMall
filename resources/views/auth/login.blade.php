@@ -17,7 +17,7 @@
                     @enderror
                 </x-ui.form.label>
                 <x-ui.form.label :title="__('Password')" :for="__('password')">
-                    <x-ui.form.input type="password" :for="__('password')" placeholder="********" minlength="8" maxlength="32" required autofocus autocomplete="new-password" />
+                    <x-ui.form.input type="password" :for="__('password')" placeholder="********" minlength="8" maxlength="32" required autocomplete="new-password" />
                     @error('password')
                         <x-ui.form.input-error :message="$message" class="mt-2" />
                     @enderror
@@ -27,13 +27,13 @@
                         <x-ui.form.check-box :for="__('remember')" />
                         {{ __('Remember me') }}
                     </label>
-                    <a href="{{ route('home') }}" class="underline hover:text-orange-500">{{ __('Forget Password') }}</a>
+                    <a wire:navigate href="#" class="underline hover:text-orange-500">{{ __('Forget Password') }}</a>
                 </div>
                 <div class="flex justify-center mt-4">
                     <x-ui.buttons.primary type="submit" :title="__('Login')" />
                 </div>
             </form>
-            <a class="underline text-sm text-gray-800 hover:text-orange-500 w-fit block mx-auto mt-4" href="{{ route('register.index') }}">
+            <a wire:navigate class="underline text-sm text-gray-800 hover:text-orange-500 w-fit block mx-auto mt-4" href="{{ route('register.index') }}">
                 {{ __('Not already registered?') }}
             </a>
         </div>

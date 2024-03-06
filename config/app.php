@@ -7,18 +7,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Name
+    | Application Meta Information
     |--------------------------------------------------------------------------
-    |
-    | This value is the name of your application. This value is used when the
-    | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
-    |
     */
 
     'name' => 'Mall of Karor',
 
     'logo' => 'assets/images/logo.png',
+    
+    'author' => 'Ch. Khuram Bashir',
+    
+    'author_email' => 'pbc.karor@gmail.com',
+
+    'keywords' => 'mall, karor, karor mall, karor mall of karor',
+
+    'description' => 'The place where you can buy your needs with quality.',
 
     /*
     |--------------------------------------------------------------------------
@@ -60,6 +63,8 @@ return [
     'url' => 'http://localhost',
 
     'asset_url' => env('ASSET_URL'),
+ 
+    'img_url' => 'storage/',
 
     /*
     |--------------------------------------------------------------------------

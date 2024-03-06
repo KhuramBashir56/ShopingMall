@@ -30,10 +30,10 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'terms' => $request->terms == 'on' ? 1 : 0,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'terms' => $request->input('terms') == 'on' ? 1 : 1,
             'ip' => request()->ip(),
             'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
         ]);

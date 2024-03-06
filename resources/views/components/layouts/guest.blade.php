@@ -1,3 +1,25 @@
-<div>
-    <!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->
-</div>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $title . ' | ' . config('app.name') }}</title>
+    <meta name="description" content="{{ $description ?? config('app.description') }}" />
+    <meta name="Keywords"content="{{ $keywords ?? config('app.keywords') }}" />
+    <x-layouts.meta-information />
+    @livewireStyles
+    @vite('resources/css/app.css')
+    @stack('styles')
+</head>
+
+<body>
+    <x-web.header />
+    {{ $slot }}
+    @livewireScripts
+    @vite('resources/js/app.js')
+    @stack('scripts')
+</body>
+
+</html>
