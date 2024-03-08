@@ -16,11 +16,9 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $title, $thumbnail, $description, $keyword, $meta_keywords, $meta_description;
+    public $title, $thumbnail, $description, $keyword, $meta_keywords, $meta_description = '';
 
     public $keywords = [];
-
-    public $edit = false;
 
     public function addKeyword()
     {
@@ -33,12 +31,20 @@ class Create extends Component
             }
         }
         $this->reset(['keyword']);
+        $this->dispatch('inputNull');
     }
 
     public function removeKeyword($index)
     {
         unset($this->keywords[$index]);
         $this->keywords = array_values($this->keywords);
+    }
+
+    public function cancel()
+    {
+        $this->keywords = [];
+        $this->reset(['title', 'thumbnail', 'description', 'keywords', 'meta_keywords', 'meta_description']);
+        return redirect()->route('admin.categories.list');
     }
 
     public function store()

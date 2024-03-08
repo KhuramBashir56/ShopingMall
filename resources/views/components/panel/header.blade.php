@@ -11,7 +11,7 @@
                 <button x-on:click="user_menu = ! user_menu" class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none">
                     <img class="object-cover w-8 h-8 rounded-full" loading="lazy" src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82" alt="" aria-hidden="true" />
                 </button>
-                <menu x-show="user_menu" style="display: none;">
+                <menu x-show="user_menu" x-on:click.away="user_menu = false" style="display: none;">
                     <ul class="absolute right-0 w-56 mt-2 text-gray-600 bg-white border border-gray-100 divide-y-2 rounded-md shadow-md">
                         <li class="flex">
                             <a href="#" class="inline-flex items-center w-full px-3 gap-2 py-2 text-sm font-semibold transition-colors duration-150 hover:bg-orange-500 hover:text-white">

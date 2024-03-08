@@ -1,7 +1,7 @@
 @can('admin')
     <x-panel.menu-bar.menu-title :title="__('Product Management')" />
     <x-panel.menu-bar.sub-menu :title="__('Categories')" :icon="__('category')" :active="__('admin/categories/create admin/categories/list')">
-        <x-panel.menu-bar.sub-menu-item :title="__('Ad New Category')" href="{{ route('admin.categories.create') }}" :active="__('admin/categories/create')" />
+        <x-panel.menu-bar.sub-menu-item :title="__('Create New Category')" href="{{ route('admin.categories.create') }}" :active="__('admin/categories/create')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Categories List')" href="{{ route('admin.categories.list') }}" :active="__('admin/categories/list')" />
     </x-panel.menu-bar.sub-menu>
     <x-panel.menu-bar.sub-menu :title="__('Brands')" :icon="__('brand_family')" :active="__('admin/brands/create admin/brands/list')">

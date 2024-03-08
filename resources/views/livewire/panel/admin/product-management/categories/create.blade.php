@@ -2,7 +2,6 @@
     {{ __('Create New Category') }}
 </x-slot>
 <section class="grid gap-4">
-    <x-ui.alert-messages />
     <x-ui.table.header>
         <x-ui.links.primary href="{{ route('admin.categories.list') }}" title="View Categories List" />
     </x-ui.table.header>
@@ -33,12 +32,12 @@
 
                 <x-ui.form.label :title="__('Meta Keywords')" :for="__('keyword')">
                     @if (count($keywords) < 5)
-                        <x-ui.form.input type="text" :for="__('keyword')" wire:model="keyword" wire:keydown.enter="addKeyword" wire:target="addKeyword" placeholder="Write keyword and press enter key." maxlength="48" />
+                        <x-ui.form.input type="text" :for="__('keyword')" wire:model="keyword" wire:keydown.enter="addKeyword" x-on:inputNull="{ $wire.keyword.value = '' }" placeholder="Write keyword and press enter key." maxlength="48" />
                     @endif
                     @error('meta_keywords')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
-                    <x-ui.form.input-description :message="__('You can enter a maximum 5 keywords, each keyword being 48 characters long.')" />
+                    <x-ui.form.input-description :message="__('The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.')" />
                 </x-ui.form.label>
 
                 <div class="flex flex-wrap -mt-2 mb-3 gap-x-1 gap-y-3">
@@ -60,6 +59,7 @@
                 </x-ui.form.label>
 
                 <div class="flex items-center justify-end gap-x-3">
+                    <x-ui.buttons.danger wire:click="cancel" type="button" title="Cancel" />
                     <x-ui.buttons.success wire:click="store" type="button" :title="__('Save')" />
                 </div>
             </div>

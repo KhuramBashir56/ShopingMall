@@ -3,7 +3,6 @@
 namespace App\Livewire\Panel\Admin\ProductManagement\Categories;
 
 use App\Models\Category;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,7 +23,7 @@ class Index extends Component
         if (!empty($category)) {
             $category->status = 'published';
             $category->save();
-            session()->flash('success', 'Category visible status updated successfully.');
+            session()->flash('success', 'Category visibility status updated successfully.');
         } else {
             session()->flash('error', 'Category not found.');
         }
@@ -36,7 +35,7 @@ class Index extends Component
         if (!empty($category)) {
             $category->status = 'unpublished';
             $category->save();
-            session()->flash('success', 'Category visible status updated successfully.');
+            session()->flash('success', 'Category visibility status updated successfully.');
         } else {
             session()->flash('error', 'Category not found.');
         }
