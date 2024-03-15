@@ -16,10 +16,10 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $keywords = [];
-
     public $category_id, $name, $thumbnail, $description, $keyword, $meta_keywords, $meta_description;
-
+    
+    public $keywords = [];
+    
     public function addKeyword()
     {
         $this->keyword = trim($this->keyword);
@@ -43,7 +43,7 @@ class Create extends Component
     {
         $this->keywords = [];
         $this->reset(['category_id', 'name', 'thumbnail', 'description', 'keywords', 'meta_keywords', 'meta_description']);        
-        return $this->redirectRoute('admin.brands.list');
+        return $this->redirectRoute('admin.brands.list', navigate: true);
     }
 
     public function store()

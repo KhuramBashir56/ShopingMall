@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components\Ui\Table;
+namespace App\View\Components\Panel\Ui;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Header extends Component
+class PageHeader extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class Header extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.ui.table.header');
+        return view('components.panel.ui.page-header');
     }
 }

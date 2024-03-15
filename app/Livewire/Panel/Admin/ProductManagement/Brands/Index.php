@@ -15,11 +15,9 @@ class Index extends Component
 
     use WithoutUrlPagination;
 
-    public $search = '';
+    public $search, $searchOption = '';
 
-    public $searchOption = '';
-
-    public function unVisible($index)
+    public function invisible($index)
     {
         $brand = Brand::find($index);
         if (!empty($brand)) {
@@ -50,6 +48,26 @@ class Index extends Component
             $brand->status = 'deleted';
             $brand->save();
             session()->flash('success', 'Brand deleted successfully.');
+        } else {
+            session()->flash('error', 'Brand not found.');
+        }
+    }
+
+    public function details($index)
+    {
+        $brand = Brand::find($index);
+        if (!empty($brand)) {
+            return $this->redirectRoute('admin.brands.details', ['brand_id' => $index], navigate: true);
+        } else {
+            session()->flash('error', 'Brand not found.');
+        }
+    }
+
+    public function edit($index)
+    {
+        $brand = Brand::find($index);
+        if (!empty($brand)) {
+            return $this->redirectRoute('admin.brands.edit', ['brand_id' => $index], navigate: true);
         } else {
             session()->flash('error', 'Brand not found.');
         }

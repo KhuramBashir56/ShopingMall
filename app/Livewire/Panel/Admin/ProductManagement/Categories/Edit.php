@@ -4,10 +4,11 @@ namespace App\Livewire\Panel\Admin\ProductManagement\Categories;
 
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Create extends Component
+class Edit extends Component
 {
     public function __construct()
     {
@@ -16,9 +17,25 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $title, $thumbnail, $description, $keyword, $meta_keywords, $meta_description = '';
+    public $category_id, $title, $thumbnail, $oldThumbnail, $description, $keyword, $meta_keywords, $meta_description = '';
 
     public $keywords = [];
+
+    public function mount($category_id)
+    {
+        $category = Category::find($category_id);
+        if (empty($category)) {
+            session()->flash('error', 'Category not found.');
+            return $this->redirectRoute('admin.categories.list', navigate: true);
+        } else {
+            $this->category_id = $category->id;
+            $this->title = $category->title;
+            $this->oldThumbnail = $category->thumbnail;
+            $this->description = $category->description;
+            $this->keywords = explode(',', $category->meta_keywords);
+            $this->meta_description = $category->meta_description;
+        }
+    }
 
     public function addKeyword()
     {
@@ -42,32 +59,41 @@ class Create extends Component
     public function cancel()
     {
         $this->keywords = [];
-        $this->reset(['title', 'thumbnail', 'description', 'keywords', 'meta_keywords', 'meta_description']);
+        $this->reset(['title', 'thumbnail', 'description', 'keyword', 'meta_keywords', 'meta_description']);
         return $this->redirectRoute('admin.categories.list', navigate: true);
     }
 
-    public function store()
+    public function update($category_id)
     {
         if (empty($this->keywords)) {
             $this->addKeyword();
         } else {
             $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
             $this->validate([
-                'title' => ['required', 'string', 'max:48', 'unique:categories,title'],
-                'thumbnail' => [
-                    'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',
-                    // 'dimensions:min_width=440,min_height=248,max_width=1280,max_height=720'
-                ],
+                'title' => ['required', 'string', 'max:48', 'unique:categories,title,' . $category_id],
                 'description' => ['required', 'string', 'max:500'],
                 'meta_keywords' => ['required', 'string', 'max:255'],
                 'meta_description' => ['required', 'string', 'max:160'],
-            ], [
-                'thumbnail.dimensions' => 'The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.',
             ]);
-            Category::create([
+
+            $category = Category::find($category_id);
+
+            if ($this->thumbnail) {
+                $this->validate([
+                    'thumbnail' => [
+                        'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',
+                        // 'dimensions:min_width=440,min_height=248,max_width=1280,max_height=720'
+                    ]
+                ], [
+                    'thumbnail.dimensions' => 'The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.',
+                ]);
+                Storage::disk('public')->delete($this->oldThumbnail);
+                $category->thumbnail =  $this->thumbnail->store('uploads/categories', 'public');
+            }
+
+            $category->update([
                 'author_id' => Auth::user()->id,
                 'title' => trim($this->title),
-                'thumbnail' => $this->thumbnail->store('uploads/categories', 'public'),
                 'description' => strip_tags($this->description),
                 'slug' => str_replace(' ', '-', trim($this->title)),
                 'meta_keywords' => $this->meta_keywords,
@@ -75,13 +101,13 @@ class Create extends Component
                 'ip' => request()->ip(),
                 'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
             ]);
-            session()->flash('success', 'Data saved new category created successfully.');
+            session()->flash('success', 'Data saved category updated successfully.');
             $this->cancel();
         }
     }
 
     public function render()
     {
-        return view('livewire.panel.admin.product-management.categories.create');
+        return view('livewire.panel.admin.product-management.categories.edit');
     }
 }

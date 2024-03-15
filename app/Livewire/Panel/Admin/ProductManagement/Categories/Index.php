@@ -29,7 +29,7 @@ class Index extends Component
         }
     }
 
-    public function unVisible($index)
+    public function invisible($index)
     {
         $category = Category::find($index);
         if (!empty($category)) {
@@ -58,8 +58,17 @@ class Index extends Component
     {
         $category = Category::find($index);
         if (!empty($category)) {
-            session($index);
-            $this->redirect(route('panel.admin.product-management.categories.details', $category->id));
+            $this->redirectRoute('admin.categories.details', ['category_id' => $index], navigate: true);
+        } else {
+            session()->flash('error', 'Category not found.');
+        }
+    }
+
+    public function edit($index)
+    {
+        $category = Category::find($index);
+        if (!empty($category)) {
+            $this->redirectRoute('admin.categories.edit', ['category_id' => $index], navigate: true);
         } else {
             session()->flash('error', 'Category not found.');
         }

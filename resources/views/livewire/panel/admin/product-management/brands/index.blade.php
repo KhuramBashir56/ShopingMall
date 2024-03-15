@@ -3,10 +3,10 @@
 </x-slot>
 <section class="grid gap-4">
     <x-ui.alert-messages />
-    <x-ui.table.header>
+    <x-panel.ui.page-header>
         <x-ui.links.primary href="{{ route('admin.brands.create') }}" title="Create New Brand" />
         <x-ui.form.input-search wire:model.live="search" placeholder="Search Brands..." />
-    </x-ui.table.header>
+    </x-panel.ui.page-header>
     @if ($brands->count() < 1)
         <h3 class="text-4xl text-gray-700">Record Not Found...</h3>
     @else
@@ -24,7 +24,7 @@
                     <x-ui.table.tr>
                         <x-ui.table.td :content="$index + 1" />
                         <x-ui.table.td>
-                            <img src="{{ asset('storage/' . $data->thumbnail) }}" alt="{{ $data->name . 'thumbnail image' }}" class="w-16 aspect-square">
+                            <img src="{{ asset(config('app.img_url') . $data->thumbnail) }}" alt="{{ $data->name . 'thumbnail image' }}" class="w-16 aspect-square">
                         </x-ui.table.td>
                         <x-ui.table.td :content="$data->name" />
                         <x-ui.table.td :content="$data->category->title" />
@@ -32,14 +32,15 @@
                             @if ($data->status == 'published')
                                 <x-ui.badges.success :content="__('Visible')" />
                             @else
-                                <x-ui.badges.danger :content="__('Un Visible')" />
+                                <x-ui.badges.danger :content="__('Invisible')" />
                             @endif
                         </x-ui.table.td>
                         <x-ui.table.td class="text-center">
                             <x-ui.table.actions>
                                 <x-ui.table.action-button wire:click='details({{ $data->id }})' :title="__('View Details')" :icon="__('info')" />
+                                <x-ui.table.action-button wire:click='edit({{ $data->id }})' :title="__('Edit')" :icon="__('edit_square')" />
                                 @if ($data->status == 'published')
-                                    <x-ui.table.action-button wire:click='unVisible({{ $data->id }})' wire:confirm="Are you sure, you want to make brand status as Un Visible?" :title="__('Un Visible')" :icon="__('visibility_off')" />
+                                    <x-ui.table.action-button wire:click='invisible({{ $data->id }})' wire:confirm="Are you sure, you want to make brand status as Invisible?" :title="__('Invisible')" :icon="__('visibility_off')" />
                                 @else
                                     <x-ui.table.action-button wire:click='visible({{ $data->id }})' :title="__('Visible')" wire:confirm="Are you sure, you want to make brand status as Visible?" :icon="__('visibility')" />
                                 @endif

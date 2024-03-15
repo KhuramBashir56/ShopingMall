@@ -1,7 +1,7 @@
 <header class="z-40 py-4 bg-orange-500 shadow-md">
     <div class="flex items-center justify-between h-full px-6 mx-auto text-white">
         <div class="flex items-center">
-            <a class="text-lg font-bold" href="{{ route('home') }}" title="{{ config('app.name') }} Logo">{{ config('app.name') }}</a>
+            <a class="text-lg font-bold" href="{{ route('home') }}" title="{{ config('app.name') }} Logo">{{ __('Welcome to ') . config('app.name') }}</a>
             <button id="menu_bar_toggle_button" class="p-1 ms-3 rounded-md lg:hidden focus:outline-none focus:shadow-outline-purple" title="Toggle Menu Bar">
                 <span class="material-symbols-outlined">{{ __('menu') }}</span>
             </button>

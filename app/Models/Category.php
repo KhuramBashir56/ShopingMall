@@ -16,4 +16,9 @@ class Category extends Model
     protected $casts = [
         'deleted_at' => 'datetime'
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }

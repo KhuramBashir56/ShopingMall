@@ -30,12 +30,14 @@ Route::middleware('auth')->group(function () {
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('list', App\Livewire\Panel\Admin\ProductManagement\Categories\Index::class)->name('list');
             Route::get('create', App\Livewire\Panel\Admin\ProductManagement\Categories\Create::class)->name('create');
-            Route::get('details', App\Livewire\Panel\Admin\ProductManagement\Categories\Details::class)->name('details');
+            Route::get('{category_id}/details', App\Livewire\Panel\Admin\ProductManagement\Categories\Details::class)->name('details');
+            Route::get('{category_id}/edit', App\Livewire\Panel\Admin\ProductManagement\Categories\Edit::class)->name('edit');
         });
         Route::prefix('brands')->name('brands.')->group(function () {
             Route::get('list', App\Livewire\Panel\Admin\ProductManagement\Brands\Index::class)->name('list');
             Route::get('create', App\Livewire\Panel\Admin\ProductManagement\Brands\Create::class)->name('create');
-            Route::get('details', App\Livewire\Panel\Admin\ProductManagement\Brands\Details::class)->name('details');
+            Route::get('{brand_id}/details', App\Livewire\Panel\Admin\ProductManagement\Brands\Details::class)->name('details');
+            Route::get('{brand_id}/edit', App\Livewire\Panel\Admin\ProductManagement\Brands\Edit::class)->name('edit');
         });
         Route::prefix('products')->name('products.')->group(function () {
             Route::get('list', App\Livewire\Panel\Admin\ProductManagement\Products\Index::class)->name('list');

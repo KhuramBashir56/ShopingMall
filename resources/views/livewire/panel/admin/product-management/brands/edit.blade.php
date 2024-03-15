@@ -1,15 +1,20 @@
 <x-slot name="title">
-    {{ __('Ad New Brand') }}
+    {{ __('Edit Brand Information') }}
 </x-slot>
+
 <section class="grid gap-4">
-    <x-panel.ui.page-header>
-        <x-ui.links.primary href="{{ route('admin.brands.list') }}" title="View Brands List" />
-    </x-panel.ui.page-header>
+    <div class="max-w-xs aspect-square">
+        @if ($thumbnail)
+            <img src="{{ $thumbnail->temporaryUrl() }}" alt="{{ $name . 'thumbnail image' }}" class="w-full h-full">
+        @else
+            <img src="{{ asset(config('app.img_url') . $oldThumbnail) }}" alt="{{ $name . 'thumbnail image' }}" class="w-full h-full">
+        @endif
+    </div>
     <x-panel.ui.card>
         <div class="grid md:grid-cols-2 gap-x-6 w-full">
             <x-ui.form.label :title="__('Brand Name')" :for="__('name')">
-                <x-ui.form.input type="text" wire:model='name' :for="__('name')" placeholder="Brand name goes here..." maxlength="24" />
-                @error('name')
+                <x-ui.form.input wire:model="name" type="text" :for="__('name')" placeholder="Brand Name goes here..." maxlength="48" />
+                @error('title')
                     <x-ui.form.input-error :message="$message" />
                 @enderror
             </x-ui.form.label>
@@ -28,17 +33,17 @@
                 @enderror
             </x-ui.form.label>
 
-            <x-ui.form.label :title="__('Brand Thumbnail')" :for="__('thumbnail')">
+            <x-ui.form.label :title="__('Category Thumbnail')" :for="__('thumbnail')">
                 <x-ui.form.input-file wire:model="thumbnail" :for="__('thumbnail')" accept=".jpg, .jpeg, .png, .svg, webp" />
                 @error('thumbnail')
                     <x-ui.form.input-error :message="$message" />
                 @enderror
-                <x-ui.form.input-description :message="__('The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.')" />
+                <x-ui.form.input-description :message="__('You can enter a maximum 5 keywords, each keyword being 48 characters long.')" />
             </x-ui.form.label>
 
             <div class="md:col-span-2">
-                <x-ui.form.label :title="__('Brand Description')" :for="__('description')">
-                    <x-ui.form.textarea wire:model='description' :for="__('description')" placeholder="Brand description goes here..." maxlength="500" />
+                <x-ui.form.label :title="__('Category Description')" :for="__('description')">
+                    <x-ui.form.textarea wire:model='description' :for="__('description')" placeholder="Category description goes here..." maxlength="500" />
                     @error('description')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
@@ -46,12 +51,12 @@
 
                 <x-ui.form.label :title="__('Meta Keywords')" :for="__('keyword')">
                     @if (count($keywords) < 5)
-                        <x-ui.form.input type="text" :for="__('keyword')" wire:model="keyword" wire:keydown.enter="addKeyword" wire:target="addKeyword" placeholder="Write keyword and press enter key." maxlength="48" />
+                        <x-ui.form.input type="text" :for="__('keyword')" wire:model="keyword" wire:keydown.enter="addKeyword" placeholder="Write keyword and press enter key." maxlength="48" />
                     @endif
                     @error('meta_keywords')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
-                    <x-ui.form.input-description :message="__('You can enter a maximum 5 keywords, each keyword being 48 characters long.')" />
+                    <x-ui.form.input-description :message="__('The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.')" />
                 </x-ui.form.label>
 
                 <div class="flex flex-wrap -mt-2 mb-3 gap-x-1 gap-y-3">
@@ -66,15 +71,15 @@
                 </div>
 
                 <x-ui.form.label :title="__('Meta Description')" :for="__('meta_description')">
-                    <x-ui.form.textarea wire:model='meta_description' :for="__('meta_description')" placeholder="Brand meta description wite here maximum 160 characters." maxlength="160" />
+                    <x-ui.form.textarea wire:model='meta_description' :for="__('meta_description')" placeholder="Category meta description wite here maximum 160 characters." maxlength="160" />
                     @error('meta_description')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
                 </x-ui.form.label>
 
                 <div class="flex items-center justify-end gap-x-3">
-                    <x-ui.buttons.danger wire:click="cancel" type="button" title="Cancel" />
-                    <x-ui.buttons.success wire:click="store" type="button" :title="__('Save')" />
+                    <x-ui.buttons.danger wire:click="cancel" wire:confirm="Are you sure, you want to destroy form data ?" type="button" :title="__('Cancel')" />
+                    <x-ui.buttons.success wire:click="update({{ $brand_id }})" type="button" :title="__('Update')" />
                 </div>
             </div>
         </div>

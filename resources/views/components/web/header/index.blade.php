@@ -5,8 +5,8 @@
             <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
         </svg>
     </button>
-    <a wire:navigate href="{{ route('home') }}" title="{{ config('app.name') }}" class="h-24 aspect-auto">
-        <img src="{{ asset(config('app.logo')) }}" alt="{{ config('app.name') . ' Logo' }}" class="h-24 aspect-auto">
+    <a wire:navigate href="{{ route('home') }}" title="{{ config('app.name') }}" class="h-20 aspect-auto">
+        <img src="{{ asset(config('app.logo')) }}" alt="{{ config('app.name') . ' Logo' }}" class="h-full w-full">
     </a>
     <menu class="ml-auto hidden md:block absolute md:static top-full left-0 w-full md:w-fit" id="menu">
         <ul class="flex md:flex-row flex-col  md:divide-x-2 divide-y-2 md:divide-y-0 md:shadow-none shadow-md bg-white">

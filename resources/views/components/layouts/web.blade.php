@@ -10,7 +10,7 @@
     <meta name="Keywords"content="{{ $keywords ?? config('app.keywords') }}" />
     <x-layouts.meta-information />
     @livewireStyles
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
 
@@ -18,7 +18,6 @@
     <x-web.header />
     {{ $slot }}
     @livewireScripts
-    @vite('resources/js/app.js')
     @stack('scripts')
 </body>
 

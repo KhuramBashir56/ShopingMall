@@ -22,14 +22,13 @@
                 <x-panel.menu-bar.index />
                 <div class="px-4 py-3 flex flex-col overflow-y-auto gap-y-3 transition-transform w-full">
                     <h2 class="text-xl font-semibold text-gray-700">
-                        {{ $title }}
+                        {{ $title ?? '' }}
                     </h2>
                     {{ $slot }}
                 </div>
             </main>
         </div>
     </div>
-    @vite(['resources/js/app.js'])
     @stack('scripts')
 </body>
 

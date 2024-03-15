@@ -3,10 +3,10 @@
 </x-slot>
 <section class="grid gap-4">
     <x-ui.alert-messages />
-    <x-ui.table.header>
+    <x-panel.ui.page-header>
         <x-ui.links.primary href="{{ route('admin.categories.create') }}" title="Create New Category" />
         <x-ui.form.input-search wire:model.live="search" placeholder="Search Categories..." />
-    </x-ui.table.header>
+    </x-panel.ui.page-header>
     @if ($categories->count() < 1)
         <h3 class="text-4xl text-gray-700">Record Not Found...</h3>
     @else
@@ -30,14 +30,15 @@
                             @if ($data->status == 'published')
                                 <x-ui.badges.success :content="__('Visible')" />
                             @else
-                                <x-ui.badges.danger :content="__('Un Visible')" />
+                                <x-ui.badges.danger :content="__('Invisible')" />
                             @endif
                         </x-ui.table.td>
                         <x-ui.table.td class="text-center">
                             <x-ui.table.actions>
                                 <x-ui.table.action-button wire:click='details({{ $data->id }})' :title="__('View Details')" :icon="__('info')" />
+                                <x-ui.table.action-button wire:click='edit({{ $data->id }})' :title="__('Edit')" :icon="__('edit_square')" />
                                 @if ($data->status == 'published')
-                                    <x-ui.table.action-button wire:click='unVisible({{ $data->id }})' wire:confirm="Are you sure, you want to make category status as Un Visible?" :title="__('Un Visible')" :icon="__('visibility_off')" />
+                                    <x-ui.table.action-button wire:click='invisible({{ $data->id }})' wire:confirm="Are you sure, you want to make category status as Invisible?" :title="__('Invisible')" :icon="__('visibility_off')" />
                                 @else
                                     <x-ui.table.action-button wire:click='visible({{ $data->id }})' :title="__('Visible')" wire:confirm="Are you sure, you want to make category status as Visible?" :icon="__('visibility')" />
                                 @endif

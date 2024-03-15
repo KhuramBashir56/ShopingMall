@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'brands';
 
     protected $fillable = ['author_id', 'category_id', 'name', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description', 'ip', 'device'];
@@ -16,6 +16,11 @@ class Brand extends Model
     protected $casts = [
         'deleted_at' => 'datetime'
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id', 'id');
+    }
 
     public function category()
     {

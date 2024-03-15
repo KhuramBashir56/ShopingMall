@@ -1,11 +1,15 @@
 <x-slot name="title">
-    {{ __('Create New Category') }}
+    {{ __('Edit Category Information') }}
 </x-slot>
 
 <section class="grid gap-4">
-    <x-panel.ui.page-header>
-        <x-ui.links.primary href="{{ route('admin.categories.list') }}" title="View Categories List" />
-    </x-panel.ui.page-header>
+    <div class="max-w-xs aspect-square">
+        @if ($thumbnail)
+            <img src="{{ $thumbnail->temporaryUrl() }}" alt="{{ $title . 'thumbnail image' }}" class="w-full h-full">
+        @else
+            <img src="{{ asset(config('app.img_url') . $oldThumbnail) }}" alt="{{ $title . 'thumbnail image' }}" class="w-full h-full">
+        @endif
+    </div>
     <x-panel.ui.card>
         <div class="grid md:grid-cols-2 gap-x-6 w-full">
             <x-ui.form.label :title="__('Category Title')" :for="__('title')">
@@ -61,7 +65,7 @@
 
                 <div class="flex items-center justify-end gap-x-3">
                     <x-ui.buttons.danger wire:click="cancel" wire:confirm="Are you sure, you want to destroy form data ?" type="button" :title="__('Cancel')" />
-                    <x-ui.buttons.success wire:click="store" type="button" :title="__('Save')" />
+                    <x-ui.buttons.success wire:click="update({{ $category_id }})" type="button" :title="__('Update')" />
                 </div>
             </div>
         </div>
