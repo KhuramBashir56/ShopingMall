@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Panel\Admin\ProductManagement\Products;
 
+use App\Models\Brand;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,7 +18,8 @@ class Index extends Component
 
     public $search = '';
 
-    public function visible($index){
+    public function visible($index)
+    {
         $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'published';
@@ -28,7 +30,8 @@ class Index extends Component
         }
     }
 
-    public function invisible($index){
+    public function invisible($index)
+    {
         $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'unpublished';
@@ -39,7 +42,8 @@ class Index extends Component
         }
     }
 
-    public function delete($index){
+    public function delete($index)
+    {
         $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'deleted';
@@ -50,12 +54,32 @@ class Index extends Component
         }
     }
 
+    public function edit($index)
+    {
+        $product = Product::find($index);
+        if (!empty($product)) {
+            return $this->redirectRoute('admin.products.edit', ['product_id' => $index], navigate: true);
+        } else {
+            session()->flash('error', 'Product not found.');
+        }
+    }
+
+    public function details($index)
+    {
+        $product = Product::find($index);
+        if (!empty($product)) {
+            return $this->redirectRoute('admin.products.details', ['product_id' => $index], navigate: true);
+        } else {
+            session()->flash('error', 'Product not found.');
+        }
+    }
+
     public function render()
     {
         return view('livewire.panel.admin.product-management.products.index', [
             'products' => Product::where('status', '!=', 'deleted')->where(function ($query) {
-                $query->where('name','LIKE', $this->search . '%');
-            })->select('id', 'name', 'thumbnail', 'status')->paginate(50)
+                $query->where('name', 'LIKE', $this->search . '%');
+            })->select('id', 'category_id', 'brand_id', 'name', 'thumbnail', 'status')->paginate(50)
         ]);
     }
 }

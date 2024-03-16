@@ -15,8 +15,8 @@
                 <x-ui.table.th :content="__('sr#')" />
                 <x-ui.table.th :content="__('Thumbnail')" />
                 <x-ui.table.th :content="__('Product')" />
-                <x-ui.table.th :content="__('Retail Price')" />
-                <x-ui.table.th :content="__('Sale Price')" />
+                <x-ui.table.th :content="__('Category')" />
+                <x-ui.table.th :content="__('Brand')" />
                 <x-ui.table.th :content="__('Visibility')" class="text-center" />
                 <x-ui.table.th :content="__('action')" class="text-center" />
             </x-ui.table.thead>
@@ -28,8 +28,8 @@
                             <img src="{{ asset(config('app.img_url') . $data->thumbnail) }}" alt="{{ $data->title . 'thumbnail image' }}" class="w-16 aspect-square">
                         </x-ui.table.td>
                         <x-ui.table.td :content="$data->name" />
-                        <x-ui.table.td :content="50" />
-                        <x-ui.table.td :content="30" />
+                        <x-ui.table.td :content="$data->category->title" />
+                        <x-ui.table.td :content="$data->brand->name" />
                         <x-ui.table.td class="text-center">
                             @if ($data->status == 'published')
                                 <x-ui.badges.success :content="__('Visible')" />
@@ -46,7 +46,7 @@
                                 @else
                                     <x-ui.table.action-button wire:click='visible({{ $data->id }})' :title="__('Visible')" wire:confirm="Are you sure, you want to make product status as Visible?" :icon="__('visibility')" />
                                 @endif
-                                <x-ui.table.action-button wire:click='delete({{ $data->id }})' wire:confirm="Are you sure, you want to delete &quot;{{ $data->title }}&quot; product?" :title="__('Delete')" :icon="__('delete')" />
+                                <x-ui.table.action-button wire:click='delete({{ $data->id }})' wire:confirm="Are you sure, you want to delete &quot;{{ $data->name }}&quot; product?" :title="__('Delete')" :icon="__('delete')" />
                             </x-ui.table.actions>
                         </x-ui.table.td>
                     </x-ui.table.tr>

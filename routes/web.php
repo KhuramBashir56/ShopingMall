@@ -42,7 +42,18 @@ Route::middleware('auth')->group(function () {
         Route::prefix('products')->name('products.')->group(function () {
             Route::get('list', App\Livewire\Panel\Admin\ProductManagement\Products\Index::class)->name('list');
             Route::get('create', App\Livewire\Panel\Admin\ProductManagement\Products\Create::class)->name('create');
-            Route::get('details', App\Livewire\Panel\Admin\ProductManagement\Products\Details::class)->name('details');
+            Route::get('{product_id}/details', App\Livewire\Panel\Admin\ProductManagement\Products\Details::class)->name('details');
+            Route::get('{product_id}/edit', App\Livewire\Panel\Admin\ProductManagement\Products\Edit::class)->name('edit');
+        });
+        Route::prefix('stock-management')->name('stock-management.')->group(function () {
+            Route::prefix('units')->name('units.')->group(function () {
+                Route::get('list', App\Livewire\Panel\Admin\StockManagement\Units\Index::class)->name('list');
+                Route::get('create', App\Livewire\Panel\Admin\StockManagement\Units\Create::class)->name('create');
+                Route::get('{unit_id}/details', App\Livewire\Panel\Admin\StockManagement\Units\Details::class)->name('details');
+                Route::get('{unit_id}/edit', App\Livewire\Panel\Admin\StockManagement\Units\Edit::class)->name('edit');
+            });
+            Route::get('history', App\Livewire\Panel\Admin\StockManagement\History::class)->name('history');
+            Route::get('new-stock', App\Livewire\Panel\Admin\StockManagement\Create::class)->name('new-stock');
         });
     });
 });
