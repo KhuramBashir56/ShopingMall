@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string('meta_description', 160);
             $table->enum('status', ['published', 'unpublished', 'deleted'])->default('unpublished');
             $table->timestamp('deleted_at')->nullable();
-            $table->ipAddress('ip');
-            $table->string('device');
             $table->timestamps();
         });
     }

@@ -12,9 +12,10 @@
         <x-panel.menu-bar.sub-menu-item :title="__('Add New Product')" href="{{ route('admin.products.create') }}" :active="__('admin/products/create')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Products List')" href="{{ route('admin.products.list') }}" :active="__('admin/products/list')" />
     </x-panel.menu-bar.sub-menu>
-    <x-panel.menu-bar.sub-menu :title="__('Stock Management')" :icon="__('inventory')" :active="__('admin/stock-management/units/list admin/stock-management/units/create admin/stock-management/units/*/edit admin/stock-management/units/*/details admin/stock-management/history admin/stock-management/new-stock')">
+    <x-panel.menu-bar.sub-menu :title="__('Stock Management')" :icon="__('inventory')" :active="__('admin/stock-management/units/list admin/stock-management/units/create admin/stock-management/units/*/edit admin/stock-management/units/*/details admin/stock-management/history admin/stock-management/new-stock admin/stock-management/available-stock')">
         <x-panel.menu-bar.sub-menu-item :title="__('Stock Units')" href="{{ route('admin.stock-management.units.list') }}" :active="__('admin/stock-management/units/list')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Add New Stock')" href="{{ route('admin.stock-management.new-stock') }}" :active="__('admin/stock-management/new-stock')" />
+        <x-panel.menu-bar.sub-menu-item :title="__('Available Stock')" href="{{ route('admin.stock-management.available-stock') }}" :active="__('admin/stock-management/available-stock')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Stock History')" href="{{ route('admin.stock-management.history') }}" :active="__('admin/stock-management/history')" />
     </x-panel.menu-bar.sub-menu>
     <x-panel.menu-bar.menu-title :title="__('Users Information')" />

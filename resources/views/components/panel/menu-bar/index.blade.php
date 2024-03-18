@@ -1,4 +1,4 @@
-<aside id="menu_bar" class="z-20 lg:static fixed -translate-x-full transition-transform lg:translate-x-0 w-80 overflow-y-auto bg-gray-700 lg:block" style="height: calc(100vh - 64.5px)">
+<aside id="menu_bar" class="z-20 lg:static fixed -translate-x-full transition-transform lg:translate-x-0 w-80 overflow-y-auto bg-gray-700 lg:block" style="height: calc(100vh - 63.5px)">
     <div class="text-gray-500 pt-2 h-full">
         <ul>
             <x-panel.menu-bar.menu-item :title="__('Dashboard')" href="{{ route('dashboard') }}" :icon="__('dashboard')" :active="__('dashboard')" />

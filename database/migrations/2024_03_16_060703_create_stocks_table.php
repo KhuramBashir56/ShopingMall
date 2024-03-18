@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('unit_id')->constrained('stock_units')->onDelete('cascade')->onUpdate('cascade');
             $table->string('supplier_name', 48);
             $table->timestamp('supplied_at');
             $table->bigInteger('invoice_Id');

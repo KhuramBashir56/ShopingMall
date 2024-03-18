@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $fillable = ['author_id', 'category_id', 'brand_id', 'name', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description', 'ip', 'device'];
+    protected $fillable = ['author_id', 'category_id', 'brand_id', 'unit_id', 'name', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description', 'ip', 'device'];
 
     protected $casts = [
         'deleted_at' => 'datetime'
@@ -20,11 +20,6 @@ class Product extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function brand()

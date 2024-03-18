@@ -11,7 +11,7 @@ class Stock extends Model
 
     protected $table = 'stocks';
 
-    protected $fillable = ['product_id', 'unit_id', 'supplier_name', 'supplied_at', 'invoice_Id', 'quantity', 'expiry_date', 'author_id'];
+    protected $fillable = ['product_id', 'supplier_name', 'supplied_at', 'invoice_Id', 'quantity', 'expiry_date', 'author_id', 'remarks'];
 
     protected $casts = [
         'supplied_at' => 'datetime',
@@ -22,15 +22,5 @@ class Stock extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
-    }
-
-    public function unit()
-    {
-        return $this->belongsTo(StockUnit::class, 'unit_id', 'id');
     }
 }

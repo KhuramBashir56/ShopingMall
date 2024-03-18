@@ -21,8 +21,6 @@ return new class extends Migration
             $table->enum('role', ['admin', 'manager', 'keeper', 'deliveryman', 'user'])->default('user');
             $table->bigInteger('rolled_by')->default(0);
             $table->enum('status', ['active', 'blocked', 'deleted'])->default('active');
-            $table->ipAddress('ip');
-            $table->string('device');
             $table->enum('terms', [0, 1]);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

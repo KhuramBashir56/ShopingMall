@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('unit_id')->constrained('product_units')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name', 48);
             $table->string('thumbnail', 255);
             $table->text('description', 500);
@@ -24,8 +25,6 @@ return new class extends Migration
             $table->string('meta_description', 160);
             $table->enum('status', ['published', 'unpublished', 'deleted'])->default('unpublished');
             $table->timestamp('deleted_at')->nullable();
-            $table->ipAddress('ip');
-            $table->string('device');
             $table->timestamps();
         });
     }
