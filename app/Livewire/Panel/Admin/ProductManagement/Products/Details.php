@@ -21,7 +21,7 @@ class Details extends Component
             $this->product = $product;
         } else {
             session()->flash('error', 'Product not found.');
-            return $this->redirectRoute('admin.products.index', [], navigate: true);
+            return $this->redirectRoute('admin.products.list', navigate: true);
         }
     }
     public function render()

@@ -4,8 +4,8 @@
 <section class="grid gap-4">
     <x-panel.ui.page-header>
         <div class="flex gap-4 flex-wrap">
-            <x-ui.links.primary href="{{ route('admin.stock-management.units.list') }}" title="View Units List" />
-            <x-ui.links.primary href="{{ route('admin.stock-management.units.create') }}" title="Add New Unit" />
+            <x-ui.links.primary href="{{ route('admin.products.units.list') }}" title="View Units List" />
+            <x-ui.links.primary href="{{ route('admin.products.units.create') }}" title="Add New Unit" />
         </div>
     </x-panel.ui.page-header>
     <x-panel.ui.card>

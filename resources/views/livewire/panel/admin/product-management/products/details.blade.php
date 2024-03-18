@@ -31,6 +31,10 @@
                             <x-ui.table.td :content="$product->brand->name" />
                         </x-ui.table.tr>
                         <x-ui.table.tr>
+                            <x-ui.table.th :content="__('Product Unit')" class="text-left" />
+                            <x-ui.table.td :content="$product->unit->title . ' (' . $product->unit->code . ')'" />
+                        </x-ui.table.tr>
+                        <x-ui.table.tr>
                             <x-ui.table.th :content="__('Product Author')" class="text-left" />
                             <x-ui.table.td :content="$product->author->name" />
                         </x-ui.table.tr>

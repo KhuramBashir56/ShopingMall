@@ -10,14 +10,13 @@
         @endif
     </div>
     <x-panel.ui.card>
+        <x-ui.form.label :title="__('Product Name')" :for="__('name')">
+            <x-ui.form.input type="text" wire:model='name' :for="__('name')" placeholder="Product name goes here..." maxlength="48" />
+            @error('name')
+                <x-ui.form.input-error :message="$message" />
+            @enderror
+        </x-ui.form.label>
         <div class="grid md:grid-cols-2 gap-x-6 w-full">
-            <x-ui.form.label :title="__('Product Name')" :for="__('name')">
-                <x-ui.form.input type="text" wire:model='name' :for="__('name')" placeholder="Product name goes here..." maxlength="24" />
-                @error('name')
-                    <x-ui.form.input-error :message="$message" />
-                @enderror
-            </x-ui.form.label>
-
             <x-ui.form.label :title="__('Category')" :for="__('category_id')">
                 <x-ui.form.select wire:model.change="category_id" :for="__('category_id')">
                     @forelse ($categories as $data)
@@ -40,6 +39,19 @@
                     @endforelse
                 </x-ui.form.select>
                 @error('brand_id')
+                    <x-ui.form.input-error :message="$message" />
+                @enderror
+            </x-ui.form.label>
+
+            <x-ui.form.label :title="__('Product Unit')" :for="__('unit_id')">
+                <x-ui.form.select wire:model="unit_id" :for="__('unit_id')">
+                    @forelse ($units as $data)
+                        <x-ui.form.select-option :title="$data->title . ' (' . $data->code . ')'" value="{{ $data->id }}" />
+                    @empty
+                        <x-ui.form.select-option :title="__('Units Not Found...')" value="" disabled />
+                    @endforelse
+                </x-ui.form.select>
+                @error('unit_id')
                     <x-ui.form.input-error :message="$message" />
                 @enderror
             </x-ui.form.label>

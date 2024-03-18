@@ -5,6 +5,7 @@ namespace App\Livewire\Panel\Admin\ProductManagement\Products;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductUnit;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -18,7 +19,7 @@ class Edit extends Component
 
     use WithFileUploads;
 
-    public $category_id, $brand_id, $product_id, $name, $oldThumbnail, $thumbnail, $description, $meta_keywords, $keyword, $meta_description = '';
+    public $category_id, $brand_id, $unit_id, $product_id, $name, $oldThumbnail, $thumbnail, $description, $meta_keywords, $keyword, $meta_description = '';
 
     public $keywords = [];
 
@@ -31,6 +32,7 @@ class Edit extends Component
             $this->product_id = $product->id;
             $this->category_id = $product->category_id;
             $this->brand_id = $product->brand_id;
+            $this->unit_id = $product->unit_id;
             $this->name = $product->name;
             $this->oldThumbnail = $product->thumbnail;
             $this->description = $product->description;
@@ -51,6 +53,10 @@ class Edit extends Component
             } else {
                 session()->flash('error', 'The keyword "' . $this->keyword . '"  already exists in the list.');
             }
+        } else {
+            $this->validate([
+                'meta_keywords' => ['required', 'string', 'max:255']
+            ]);
         }
         $this->reset(['keyword']);
     }
@@ -121,7 +127,8 @@ class Edit extends Component
 
         return view('livewire.panel.admin.product-management.products.edit', [
             'categories' => Category::where('status', 'published')->select('id', 'title')->get(),
-            'brands' => $this->brands
+            'brands' => $this->brands,
+            'units' => ProductUnit::where('status', 'published')->select('id', 'title')->get(),
         ]);
     }
 }

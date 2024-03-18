@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Panel\Admin\ProductManagement\Products;
 
-use App\Models\Brand;
 use App\Models\Product;
+use App\Models\UserAction;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,57 +19,76 @@ class Index extends Component
 
     public $search = '';
 
-    public function visible($index)
+    public function visible(Product $product)
     {
-        $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'published';
-            $product->save();
+            $product->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product',
+                'action_id' => $product->id,
+                'type' => 'visible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Product visibility status updated successfully.');
         } else {
             session()->flash('error', 'Product not found.');
         }
     }
 
-    public function invisible($index)
+    public function invisible(Product $product)
     {
-        $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'unpublished';
-            $product->save();
+            $product->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product',
+                'action_id' => $product->id,
+                'type' => 'invisible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Product visibility status updated successfully.');
         } else {
             session()->flash('error', 'Product not found.');
         }
     }
 
-    public function delete($index)
+    public function delete(Product $product)
     {
-        $product = Product::find($index);
         if (!empty($product)) {
             $product->status = 'deleted';
-            $product->save();
+            $product->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product',
+                'action_id' => $product->id,
+                'type' => 'delete',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Product deleted successfully.');
         } else {
             session()->flash('error', 'Product not found.');
         }
     }
 
-    public function edit($index)
+    public function edit(Product $product)
     {
-        $product = Product::find($index);
         if (!empty($product)) {
-            return $this->redirectRoute('admin.products.edit', ['product_id' => $index], navigate: true);
+            return $this->redirectRoute('admin.products.edit', ['product_id' => $product->id], navigate: true);
         } else {
             session()->flash('error', 'Product not found.');
         }
     }
 
-    public function details($index)
+    public function details(Product $product)
     {
-        $product = Product::find($index);
         if (!empty($product)) {
-            return $this->redirectRoute('admin.products.details', ['product_id' => $index], navigate: true);
+            return $this->redirectRoute('admin.products.details', ['product_id' => $product->id], navigate: true);
         } else {
             session()->flash('error', 'Product not found.');
         }
@@ -79,7 +99,14 @@ class Index extends Component
         return view('livewire.panel.admin.product-management.products.index', [
             'products' => Product::where('status', '!=', 'deleted')->where(function ($query) {
                 $query->where('name', 'LIKE', $this->search . '%');
-            })->select('id', 'category_id', 'brand_id', 'name', 'thumbnail', 'status')->paginate(50)
+            })->with([
+                'category' => function ($category) {
+                    $category->select('id', 'title');
+                },
+                'brand' => function ($brand) {
+                    $brand->select('id', 'name');
+                }
+            ])->select('id', 'category_id', 'brand_id', 'name', 'thumbnail', 'status')->paginate(50)
         ]);
     }
 }

@@ -1,10 +1,10 @@
 <x-slot name="title">
-    {{ __('Stock Units') }}
+    {{ __('Product Units') }}
 </x-slot>
 <section class="grid gap-4">
     <x-ui.alert-messages />
     <x-panel.ui.page-header>
-        <x-ui.links.primary href="{{ route('admin.stock-management.units.create') }}" title="Add New Unit" />
+        <x-ui.links.primary href="{{ route('admin.products.units.create') }}" title="Add New Unit" />
         <x-ui.form.input-search wire:model.live="search" placeholder="Search Units..." />
     </x-panel.ui.page-header>
     @if ($units->count() < 1)

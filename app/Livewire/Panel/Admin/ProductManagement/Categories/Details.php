@@ -3,7 +3,6 @@
 namespace App\Livewire\Panel\Admin\ProductManagement\Categories;
 
 use App\Models\Category;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Details extends Component

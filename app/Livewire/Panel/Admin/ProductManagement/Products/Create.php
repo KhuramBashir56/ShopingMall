@@ -5,6 +5,9 @@ namespace App\Livewire\Panel\Admin\ProductManagement\Products;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductUnit;
+use App\Models\UserAction;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -17,7 +20,7 @@ class Create extends Component
 
     use WithFileUploads;
 
-    public $category_id, $brand_id, $name, $thumbnail, $description, $keyword, $meta_keywords, $meta_description;
+    public $category_id, $brand_id, $unit_id, $name, $thumbnail, $description, $keyword, $meta_keywords, $meta_description;
 
     public $keywords = [];
 
@@ -32,6 +35,10 @@ class Create extends Component
             } else {
                 session()->flash('error', 'The keyword "' . $this->keyword . '"  already exists in the list.');
             }
+        } else {
+            $this->validate([
+                'meta_keywords' => ['required', 'string', 'max:255']
+            ]);
         }
         $this->reset(['keyword']);
     }
@@ -52,36 +59,50 @@ class Create extends Component
 
     public function store()
     {
-        $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
-        $this->validate([
-            'category_id' => ['required', 'integer', 'min:1'],
-            'brand_id' => ['required', 'integer', 'min:1'],
-            'name' => ['required', 'string', 'max:24', 'unique:products,name'],
-            'thumbnail' => [
-                'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',
-                // 'dimensions:min_width=440,min_height=248,max_width=1280,max_height=720'
-            ],
-            'description' => ['required', 'string', 'max:500'],
-            'meta_keywords' => ['required', 'string', 'max:255'],
-            'meta_description' => ['required', 'string', 'max:160'],
-        ], [
-            'thumbnail.dimensions' => 'The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.',
-        ]);
-        Product::create([
-            'author_id' => 1,
-            'category_id' => $this->category_id,
-            'brand_id' => $this->brand_id,
-            'name' => trim($this->name),
-            'thumbnail' => $this->thumbnail->store('uploads/products', 'public'),
-            'description' => trim($this->description),
-            'slug' => str_replace(' ', '-', trim($this->name)),
-            'meta_keywords' => $this->meta_keywords,
-            'meta_description' => trim($this->meta_description),
-            'ip' => request()->ip(),
-            'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
-        ]);
-        session()->flash('success', 'Data saved new product add successfully.');
-        $this->cancel();
+        if (empty($this->keywords)) {
+            $this->addKeyword();
+        } else {
+            $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
+            $this->validate([
+                'category_id' => ['required', 'integer', 'min:1'],
+                'brand_id' => ['required', 'integer', 'min:1'],
+                'unit_id' => ['required', 'integer', 'min:1'],
+                'name' => ['required', 'string', 'max:24', 'unique:products,name'],
+                'thumbnail' => [
+                    'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',
+                    // 'dimensions:min_width=440,min_height=248,max_width=1280,max_height=720'
+                ],
+                'description' => ['required', 'string', 'max:500'],
+                'meta_keywords' => ['required', 'string', 'max:255'],
+                'meta_description' => ['required', 'string', 'max:160'],
+            ], [
+                'thumbnail.dimensions' => 'The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.',
+            ]);
+            $product = Product::create([
+                'author_id' => 1,
+                'category_id' => $this->category_id,
+                'brand_id' => $this->brand_id,
+                'unit_id' => $this->unit_id,
+                'name' => trim($this->name),
+                'thumbnail' => $this->thumbnail->store('uploads/products', 'public'),
+                'description' => trim($this->description),
+                'slug' => str_replace(' ', '-', trim($this->name)),
+                'meta_keywords' => $this->meta_keywords,
+                'meta_description' => trim($this->meta_description),
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product',
+                'action_id' => $product->id,
+                'type' => 'create',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
+            session()->flash('success', 'Data saved new product add successfully.');
+            $this->cancel();
+        }
     }
 
     public function render()
@@ -94,7 +115,8 @@ class Create extends Component
 
         return view('livewire.panel.admin.product-management.products.create', [
             'categories' => Category::where('status', 'published')->select('id', 'title')->get(),
-            'brands' => $this->brands
+            'brands' => $this->brands,
+            'units' => ProductUnit::where('status', 'published')->select('id', 'title', 'code')->get()
         ]);
     }
 }
