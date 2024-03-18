@@ -3,6 +3,7 @@
 namespace App\Livewire\Panel\Admin\ProductManagement\Categories;
 
 use App\Models\Category;
+use App\Models\UserAction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -29,6 +30,10 @@ class Create extends Component
             } else {
                 session()->flash('error', 'The keyword "' . $this->keyword . '"  already exists in the list.');
             }
+        } else {
+            $this->validate([
+                'meta_keywords' => ['required', 'string', 'max:255']
+            ]);
         }
         $this->reset(['keyword']);
     }
@@ -64,7 +69,7 @@ class Create extends Component
             ], [
                 'thumbnail.dimensions' => 'The thumbnail must have dimensions between 440x248 and 1280x720 with a 16:9 aspect ratio.',
             ]);
-            Category::create([
+            $category = Category::create([
                 'author_id' => Auth::user()->id,
                 'title' => trim($this->title),
                 'thumbnail' => $this->thumbnail->store('uploads/categories', 'public'),
@@ -72,6 +77,12 @@ class Create extends Component
                 'slug' => str_replace(' ', '-', trim($this->title)),
                 'meta_keywords' => $this->meta_keywords,
                 'meta_description' => strip_tags($this->meta_description),
+            ]);
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product_category',
+                'action_id' => $category->id,
+                'type' => 'create',
                 'ip' => request()->ip(),
                 'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
             ]);

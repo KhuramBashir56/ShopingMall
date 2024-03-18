@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('code', 2);
             $table->string('description', 255);
             $table->enum('status', ['published', 'unpublished', 'deleted'])->default('unpublished');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

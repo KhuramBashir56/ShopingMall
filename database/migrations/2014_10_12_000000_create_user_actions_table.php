@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('action', 48);
+            $table->unsignedBigInteger('action_id');
             $table->string('type', 48);
             $table->string('ip', 48);
             $table->string('device', 48);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

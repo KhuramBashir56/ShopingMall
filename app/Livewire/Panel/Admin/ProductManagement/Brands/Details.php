@@ -17,7 +17,14 @@ class Details extends Component
 
     public function mount($brand_id)
     {
-        $this->brand = Brand::select('id', 'category_id', 'author_id', 'name', 'thumbnail', 'status', 'description', 'meta_keywords', 'meta_description', 'created_at')->find($brand_id);
+        $brand = Brand::select('id', 'category_id', 'author_id', 'name', 'thumbnail', 'status', 'description', 'meta_keywords', 'meta_description', 'created_at')->find($brand_id);
+
+        if ($brand) {
+            $this->brand = $brand;
+        } else {
+            session()->flash('error', 'Brand not found.');
+            return redirect()->route('admin.brands.list')->with('navigate', true);
+        }
     }
 
     public function render()

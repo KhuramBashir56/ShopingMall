@@ -11,7 +11,7 @@ class Brand extends Model
 
     protected $table = 'brands';
 
-    protected $fillable = ['author_id', 'category_id', 'name', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description', 'ip', 'device'];
+    protected $fillable = ['author_id', 'category_id', 'name', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description'];
 
     protected $casts = [
         'deleted_at' => 'datetime'

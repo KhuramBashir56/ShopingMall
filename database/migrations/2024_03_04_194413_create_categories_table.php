@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('meta_keywords', 255);
             $table->string('meta_description', 160);
             $table->enum('status', ['published', 'unpublished', 'deleted'])->default('unpublished');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

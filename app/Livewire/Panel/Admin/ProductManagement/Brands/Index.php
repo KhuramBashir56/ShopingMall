@@ -3,6 +3,8 @@
 namespace App\Livewire\Panel\Admin\ProductManagement\Brands;
 
 use App\Models\Brand;
+use App\Models\UserAction;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 
@@ -17,57 +19,76 @@ class Index extends Component
 
     public $search, $searchOption = '';
 
-    public function invisible($index)
+    public function visible(Brand $brand)
     {
-        $brand = Brand::find($index);
-        if (!empty($brand)) {
-            $brand->status = 'unpublished';
-            $brand->save();
-            session()->flash('success', 'Brand visibility status updated successfully.');
-        } else {
-            session()->flash('error', 'Brand not found.');
-        }
-    }
-
-    public function visible($index)
-    {
-        $brand = Brand::find($index);
         if (!empty($brand)) {
             $brand->status = 'published';
-            $brand->save();
+            $brand->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'brand',
+                'action_id' => $brand->id,
+                'type' => 'visible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Brand visibility status updated successfully.');
         } else {
             session()->flash('error', 'Brand not found.');
         }
     }
 
-    public function delete($index)
+    public function invisible(Brand $brand)
     {
-        $brand = Brand::find($index);
+        if (!empty($brand)) {
+            $brand->status = 'unpublished';
+            $brand->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'brand',
+                'action_id' => $brand->id,
+                'type' => 'invisible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
+            session()->flash('success', 'Brand visibility status updated successfully.');
+        } else {
+            session()->flash('error', 'Brand not found.');
+        }
+    }
+
+    public function delete(Brand $brand)
+    {
         if (!empty($brand)) {
             $brand->status = 'deleted';
-            $brand->save();
+            $brand->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'brand',
+                'action_id' => $brand->id,
+                'type' => 'delete',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Brand deleted successfully.');
         } else {
             session()->flash('error', 'Brand not found.');
         }
     }
 
-    public function details($index)
+    public function details(Brand $brand)
     {
-        $brand = Brand::find($index);
         if (!empty($brand)) {
-            return $this->redirectRoute('admin.brands.details', ['brand_id' => $index], navigate: true);
+            return $this->redirectRoute('admin.brands.details', ['brand_id' => $brand->id], navigate: true);
         } else {
             session()->flash('error', 'Brand not found.');
         }
     }
 
-    public function edit($index)
+    public function edit(Brand $brand)
     {
-        $brand = Brand::find($index);
         if (!empty($brand)) {
-            return $this->redirectRoute('admin.brands.edit', ['brand_id' => $index], navigate: true);
+            return $this->redirectRoute('admin.brands.edit', ['brand_id' => $brand->id], navigate: true);
         } else {
             session()->flash('error', 'Brand not found.');
         }

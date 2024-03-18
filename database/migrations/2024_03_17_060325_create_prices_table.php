@@ -19,7 +19,6 @@ return new class extends Migration
             $table->double('wholesale', 7, 2);
             $table->double('retail', 7, 2);
             $table->foreignId('author_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,8 @@
 namespace App\Livewire\Panel\Admin\ProductManagement\Categories;
 
 use App\Models\Category;
+use App\Models\UserAction;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,58 +19,76 @@ class Index extends Component
 
     public $search = '';
 
-    public function visible($index)
+    public function visible(Category $category)
     {
-        $category = Category::find($index);
         if (!empty($category)) {
             $category->status = 'published';
-            $category->save();
+            $category->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product_category',
+                'action_id' => $category->id,
+                'type' => 'visible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Category visibility status updated successfully.');
         } else {
             session()->flash('error', 'Category not found.');
         }
     }
 
-    public function invisible($index)
+    public function invisible(Category $category)
     {
-        $category = Category::find($index);
         if (!empty($category)) {
             $category->status = 'unpublished';
-            $category->save();
+            $category->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product_category',
+                'action_id' => $category->id,
+                'type' => 'invisible',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Category visibility status updated successfully.');
         } else {
             session()->flash('error', 'Category not found.');
         }
     }
 
-    public function delete($index)
+    public function delete(Category $category)
     {
-        $category = Category::find($index);
         if (!empty($category)) {
             $category->status = 'deleted';
-            $category->deleted_at = now();
-            $category->save();
+            $category->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product_category',
+                'action_id' => $category->id,
+                'type' => 'delete',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Category record deleted successfully.');
         } else {
             session()->flash('error', 'Category not found.');
         }
     }
 
-    public function details($index)
+    public function details(Category $category)
     {
-        $category = Category::find($index);
         if (!empty($category)) {
-            $this->redirectRoute('admin.categories.details', ['category_id' => $index], navigate: true);
+            $this->redirectRoute('admin.categories.details', ['category_id' => $category->id], navigate: true);
         } else {
             session()->flash('error', 'Category not found.');
         }
     }
 
-    public function edit($index)
+    public function edit(Category $category)
     {
-        $category = Category::find($index);
         if (!empty($category)) {
-            $this->redirectRoute('admin.categories.edit', ['category_id' => $index], navigate: true);
+            $this->redirectRoute('admin.categories.edit', ['category_id' => $category->id], navigate: true);
         } else {
             session()->flash('error', 'Category not found.');
         }

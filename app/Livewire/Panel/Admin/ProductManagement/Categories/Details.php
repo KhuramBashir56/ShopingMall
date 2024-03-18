@@ -13,16 +13,18 @@ class Details extends Component
         $this->authorize('admin');
     }
 
-    public $category_id, $category = '';
+    public $category = '';
 
     public function mount($category_id)
     {
-        $this->category = Category::select('id', 'author_id', 'title', 'thumbnail', 'status', 'description', 'meta_keywords', 'meta_description', 'meta_description', 'created_at')->find($category_id);
+        $category = Category::select('id', 'author_id', 'title', 'thumbnail', 'status', 'description', 'meta_keywords', 'meta_description', 'created_at')->find($category_id);
 
-        if (!$this->category_id) {
+        if (!$category) {
             session()->flash('error', 'Category not found.');
-            return $this->redirectRoute('admin.categories.list', navigate: true);
+            return redirect()->route('admin.categories.list')->with('navigate', true);
         }
+
+        $this->category = $category;
     }
 
     public function render()

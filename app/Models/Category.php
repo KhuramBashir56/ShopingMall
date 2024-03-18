@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $table = 'categories';
 
-    protected $fillable = ['author_id', 'title', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description', 'ip', 'device'];
+    protected $fillable = ['author_id', 'title', 'thumbnail', 'description', 'slug', 'meta_keywords', 'meta_description'];
 
     protected $casts = [
         'deleted_at' => 'datetime'
