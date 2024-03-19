@@ -79,6 +79,7 @@ class Edit extends Component
             } else {
                 $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
                 $this->validate([
+                    'category_id' => ['required', 'integer', 'min:1', 'exists:categories,id'],
                     'name' => ['required', 'string', 'max:48', 'unique:brands,name,' . $brand->id],
                     'description' => ['required', 'string', 'max:500'],
                     'meta_keywords' => ['required', 'string', 'max:255'],

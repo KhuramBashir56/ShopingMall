@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('stock_id')->constrained('stocks')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('stock_id')->nullable()->constrained('stocks')->onDelete('cascade')->onUpdate('cascade');
             $table->double('purchase', 7, 2);
             $table->double('wholesale', 7, 2);
             $table->double('retail', 7, 2);

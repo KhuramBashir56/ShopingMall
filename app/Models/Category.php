@@ -19,6 +19,11 @@ class Category extends Model
 
     public function author()
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class, 'author_id', 'id');
+    }
+
+    public function brands()
+    {
+        return $this->hasMany(Brand::class, 'category_id')->where('status', 'published');
     }
 }

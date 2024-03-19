@@ -5,7 +5,7 @@ namespace App\Livewire\Panel\Admin\StockManagement;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\Stock;
-use App\Models\StockUnit;
+use App\Models\UserAction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -16,7 +16,7 @@ class Create extends Component
         $this->authorize('admin');
     }
 
-    public $supplier_name, $invoice, $delivery, $item_id, $item_name, $unit_id, $unit_title, $purchase_price, $purchase_total, $price, $whole_sale, $expiry_date, $remarks = '';
+    public $supplier_name, $invoice, $delivery, $item_id, $item_name, $purchase_price, $purchase_total, $price, $whole_sale, $expiry_date, $remarks = '';
 
     public $items = [];
 
@@ -77,28 +77,24 @@ class Create extends Component
         $this->validate([
             'item_id' => ['required', 'min:1', 'exists:products,id'],
             'item_name' => ['required', 'string', 'max:48'],
-            'unit_id' => ['required', 'min:1', 'exists:stock_units,id'],
             'expiry_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:' . date('Y-m-d')],
             'quantity' => ['required', 'min:1', 'max:999', 'int'],
             'purchase_price' => ['required', 'min:1', 'max:9999999', 'int', 'lte:' . $this->price, 'lte:' . $this->whole_sale],
             'whole_sale' => ['required', 'min:1', 'max:9999999', 'int', 'lte:' . $this->price, 'gte:' . $this->purchase_price],
             'price' => ['required', 'min:1', 'max:9999999', 'int', 'gte:' . $this->whole_sale, 'gte:' . $this->purchase_price],
         ]);
-        $unit = StockUnit::find($this->unit_id);
         $this->items[] = [
-            $this->item_id,
-            $this->item_name,
-            $this->unit_id,
-            $this->unit_title =  $unit->title . ' (' . $unit->code . ')',
-            $this->expiry_date,
-            $this->quantity,
-            $this->purchase_price,
-            $this->purchase_total = $this->purchase_price * $this->quantity,
-            $this->price,
-            $this->whole_sale,
+            $this->item_id, //[0]
+            $this->item_name, //[1]
+            $this->quantity, //[2]
+            $this->expiry_date, //[3]
+            $this->purchase_price, //[4]
+            $this->whole_sale, //[5]
+            $this->price, //[6]
+            $this->purchase_total = $this->purchase_price * $this->quantity, //[7] 
         ];
         $this->total = $this->total + $this->purchase_total;
-        $this->reset(['item_id', 'item_name', 'unit_id', 'purchase_price', 'purchase_total', 'price', 'whole_sale', 'expiry_date', 'quantity']);
+        $this->reset(['item_id', 'item_name', 'purchase_price', 'purchase_total', 'price', 'whole_sale', 'expiry_date', 'quantity']);
     }
 
     public function cancel()
@@ -107,7 +103,7 @@ class Create extends Component
         $this->items = [];
         $this->total = 0;
         $this->quantity = 1;
-        $this->reset(['supplier_name', 'invoice', 'delivery', 'item_id', 'item_name', 'unit_id', 'purchase_price', 'purchase_total', 'price', 'whole_sale', 'expiry_date', 'quantity', 'remarks']);
+        $this->reset(['supplier_name', 'invoice', 'delivery', 'item_id', 'item_name', 'purchase_price', 'purchase_total', 'price', 'whole_sale', 'expiry_date', 'quantity', 'remarks']);
         return $this->redirectRoute('admin.stock-management.history', navigate: true);
     }
 
@@ -125,28 +121,32 @@ class Create extends Component
             foreach ($this->items as $item) {
                 $stock = Stock::create([
                     'product_id' => $item[0],
-                    'unit_id' => $item[2],
                     'supplier_name' => $this->supplier_name,
                     'supplied_at' => $this->delivery,
                     'invoice_Id' => $this->invoice,
-                    'quantity' => $item[5],
-                    'expiry_date' => $item[4],
+                    'quantity' => $item[2],
+                    'expiry_date' => $item[3],
                     'author_id' => Auth::user()->id,
                     'remarks' => $this->remarks,
                 ]);
-                
                 $stock_id = $stock->id;
-            
                 Price::create([
                     'product_id' => $item[0],
                     'stock_id' => $stock_id,
-                    'purchase' => $item[6],
-                    'wholesale' => $item[9],
-                    'retail' => $item[8],
+                    'purchase' => $item[4],
+                    'wholesale' => $item[5],
+                    'retail' => $item[6],
                     'author_id' => Auth::user()->id,
                 ]);
+                UserAction::create([
+                    'user_id' => Auth::id(),
+                    'action' => 'stock',
+                    'action_id' => $stock_id,
+                    'type' => 'create',
+                    'ip' => request()->ip(),
+                    'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+                ]);
             }
-            
             session()->flash('success', 'New stock added successfully. Please check the history.');
             $this->cancel();
         }
@@ -160,7 +160,6 @@ class Create extends Component
             $products = [];
         }
         return view('livewire.panel.admin.stock-management.create', [
-            'units' => StockUnit::where('status', 'published')->get(),
             'products' => $products
         ]);
     }

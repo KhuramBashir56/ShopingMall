@@ -64,9 +64,9 @@ class Create extends Component
         } else {
             $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
             $this->validate([
-                'category_id' => ['required', 'integer', 'min:1'],
-                'brand_id' => ['required', 'integer', 'min:1'],
-                'unit_id' => ['required', 'integer', 'min:1'],
+                'category_id' => ['required', 'integer', 'min:1', 'exists:categories,id'],
+                'brand_id' => ['required', 'integer', 'min:1', 'exists:brands,id'],
+                'unit_id' => ['required', 'integer', 'min:1', 'exists:product_units,id'],
                 'name' => ['required', 'string', 'max:24', 'unique:products,name'],
                 'thumbnail' => [
                     'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',
@@ -89,8 +89,6 @@ class Create extends Component
                 'slug' => str_replace(' ', '-', trim($this->name)),
                 'meta_keywords' => $this->meta_keywords,
                 'meta_description' => trim($this->meta_description),
-                'ip' => request()->ip(),
-                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
             ]);
             UserAction::create([
                 'user_id' => Auth::id(),
@@ -114,7 +112,7 @@ class Create extends Component
         }
 
         return view('livewire.panel.admin.product-management.products.create', [
-            'categories' => Category::where('status', 'published')->select('id', 'title')->get(),
+            'categories' => Category::has('brands')->where('status', 'published')->select('id', 'title')->get(),
             'brands' => $this->brands,
             'units' => ProductUnit::where('status', 'published')->select('id', 'title', 'code')->get()
         ]);

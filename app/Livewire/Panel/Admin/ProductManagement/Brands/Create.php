@@ -59,7 +59,7 @@ class Create extends Component
         } else {
             $this->meta_keywords = !empty($this->keywords) ? implode(', ', $this->keywords) : NULL;
             $this->validate([
-                'category_id' => ['required', 'integer', 'min:1'],
+                'category_id' => ['required', 'integer', 'min:1', 'exists:categories,id'],
                 'name' => ['required', 'string', 'max:24', 'unique:brands,name'],
                 'thumbnail' => [
                     'required', 'image', 'mimes:jpeg,png,jpg,webp', 'max:512',

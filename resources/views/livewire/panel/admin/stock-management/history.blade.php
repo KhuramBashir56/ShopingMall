@@ -16,9 +16,9 @@
                 <x-ui.table.th :content="__('Thumbnail')" />
                 <x-ui.table.th :content="__('Product Name')" />
                 <x-ui.table.th :content="__('quantity')" />
-                <x-ui.table.th :content="__('Purchase Price')" />
-                <x-ui.table.th :content="__('Whole Sale Price')" />
-                <x-ui.table.th :content="__('Retail Sale Price')" />
+                <x-ui.table.th :content="__('Purchase')" />
+                <x-ui.table.th :content="__('Whole Sale')" />
+                <x-ui.table.th :content="__('Retail Sale')" />
                 <x-ui.table.th :content="__('Status')" class="text-center" />
                 <x-ui.table.th :content="__('action')" class="text-center" />
             </x-ui.table.thead>
@@ -30,10 +30,10 @@
                             <img src="{{ asset(config('app.img_url') . $data->product->thumbnail) }}" alt="{{ $data->product->name . 'thumbnail image' }}" class="w-16 aspect-square">
                         </x-ui.table.td>
                         <x-ui.table.td :content="$data->product->name" />
-                        <x-ui.table.td :content="$data->quantity . ' (' . $data->unit->code . ')'" />
-                        <x-ui.table.td :content="$data->price->purchase" />
-                        <x-ui.table.td :content="$data->price->wholesale" />
-                        <x-ui.table.td :content="$data->price->retail" />
+                        <x-ui.table.td :content="$data->quantity . ' (' . $data->product->unit->code . ')'" class="text-center" />
+                        <x-ui.table.td :content="$data->price->purchase" class="text-center" />
+                        <x-ui.table.td :content="$data->price->wholesale" class="text-center" />
+                        <x-ui.table.td :content="$data->price->retail" class="text-center" />
                         <x-ui.table.td class="text-center">
                             @if ($data->status == 'verified')
                                 <x-ui.badges.success :content="__('Verified')" />
@@ -44,9 +44,11 @@
                         <x-ui.table.td class="text-center">
                             <x-ui.table.actions>
                                 <x-ui.table.action-button wire:click='details({{ $data->id }})' :title="__('View Details')" :icon="__('info')" />
-                                @if ($data->status == 'unverified')
-                                    <x-ui.table.action-button wire:click='invisible({{ $data->id }})' wire:confirm="Are you sure, you want to make brand status as Invisible?" :title="__('Invisible')" :icon="__('assignment_turned_in')" />
-                                @endif
+                                @can('admin')
+                                    @if ($data->status == 'unverified')
+                                        <x-ui.table.action-button wire:click='verify({{ $data->id }})' wire:confirm="Are you sure, you want to verify this?" :title="__('Verify')" :icon="__('assignment_turned_in')" />
+                                    @endif
+                                @endcan
                             </x-ui.table.actions>
                         </x-ui.table.td>
                     </x-ui.table.tr>

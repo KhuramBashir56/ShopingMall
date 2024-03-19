@@ -35,7 +35,6 @@
                         <x-ui.table.thead>
                             <x-ui.table.th :content="__('sr#')" />
                             <x-ui.table.th :content="__('Item Name / Title')" />
-                            <x-ui.table.th :content="__('Stock Unit')" />
                             <x-ui.table.th :content="__('Expiry Date')" />
                             <x-ui.table.th :content="__('Quantity')" />
                             <x-ui.table.th :content="__('Purchase Price')" />
@@ -47,10 +46,9 @@
                                 <x-ui.table.tr>
                                     <x-ui.table.td :content="$index + 1" />
                                     <x-ui.table.td :content="$data[1]" />
-                                    <x-ui.table.td :content="$data[3]" />
-                                    <x-ui.table.td :content="Carbon\Carbon::parse($data[4])->format('d-m-Y')" />
-                                    <x-ui.table.td :content="$data[5]" />
-                                    <x-ui.table.td :content="$data[6]" />
+                                    <x-ui.table.td :content="Carbon\Carbon::parse($data[3])->format('d-m-Y')" />
+                                    <x-ui.table.td :content="$data[2]" />
+                                    <x-ui.table.td :content="$data[4]" />
                                     <x-ui.table.td :content="$data[7]" />
                                     <x-ui.table.td>
                                         <x-ui.table.actions>
@@ -60,7 +58,7 @@
                                 </x-ui.table.tr>
                             @endforeach
                             <x-ui.table.tr>
-                                <x-ui.table.td :content="__('Grand Total')" colspan="6" />
+                                <x-ui.table.td :content="__('Grand Total')" colspan="5" />
                                 <x-ui.table.td :content="$total" colspan="2" />
                             </x-ui.table.tr>
                         </x-ui.table.tbody>
@@ -78,27 +76,15 @@
                     </x-ui.form.label>
                     @if ($products_list)
                         <ul class="absolute top-[72px] left-0 shadow-md bg-white w-full max-h-64 overflow-y-auto border border-gray-500">
+                            <li><span class="text-md text-gray-500 hover:bg-blue-700 hover:text-white px-3 py-1 block cursor-pointer">{{ __('--Please Select Product--') }}</span></li>
                             @forelse ($products as $index => $data)
-                                <li><span wire:click="select_item({{ $data->id }})" class="text-md text-gray-500 hover:bg-blue-700 hover:text-white px-3 py-1 block cursor-pointer">{{ $data->name }}</span></li>
+                                <li><span wire:click="select_item({{ $data->id }})" class="text-md text-black hover:bg-blue-700 hover:text-white px-3 py-1 block cursor-pointer">{{ $data->name }}</span></li>
                             @empty
                                 <li><span class="text-md text-gray-500 hover:bg-blue-700 hover:text-white px-3 py-1 block cursor-pointer">{{ __('Item Not Found...') }}</span></li>
                             @endforelse
                         </ul>
                     @endif
                 </div>
-
-                <x-ui.form.label :title="__('Unit')" :for="__('unit_id')">
-                    <x-ui.form.select wire:model='unit_id' :for="__('unit_id')">
-                        @forelse ($units as $unit)
-                            <option value="{{ $unit->id }}">{{ $unit->title . ' (' . $unit->code . ')' }}</option>
-                        @empty
-                            <option value="" disabled>Units Not Found...</option>
-                        @endforelse
-                    </x-ui.form.select>
-                    @error('unit_id')
-                        <x-ui.form.input-error :message="$message" />
-                    @enderror
-                </x-ui.form.label>
 
                 <x-ui.form.label :title="__('Quantity')" :for="__('quantity')">
                     <div class="flex mt-1">
@@ -129,16 +115,16 @@
                     @enderror
                 </x-ui.form.label>
 
-                <x-ui.form.label :title="__('Retail Price')" :for="__('price')">
-                    <x-ui.form.input type="number" wire:model='price' :for="__('price')" placeholder="Price goes here..." min="1" max="9999999" />
-                    @error('price')
+                <x-ui.form.label :title="__('Whole Sale Price')" :for="__('whole_sale')">
+                    <x-ui.form.input type="number" wire:model='whole_sale' :for="__('whole_sale')" placeholder="Whole Sale price goes here..." min="1" max="9999999" />
+                    @error('whole_sale')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
                 </x-ui.form.label>
 
-                <x-ui.form.label :title="__('Whole Sale Price')" :for="__('whole_sale')">
-                    <x-ui.form.input type="number" wire:model='whole_sale' :for="__('whole_sale')" placeholder="Whole Sale price goes here..." min="1" max="9999999" />
-                    @error('whole_sale')
+                <x-ui.form.label :title="__('Retail Price')" :for="__('price')">
+                    <x-ui.form.input type="number" wire:model='price' :for="__('price')" placeholder="Price goes here..." min="1" max="9999999" />
+                    @error('price')
                         <x-ui.form.input-error :message="$message" />
                     @enderror
                 </x-ui.form.label>

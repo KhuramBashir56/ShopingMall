@@ -23,4 +23,15 @@ class Stock extends Model
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+    
+    public function price()
+    {
+        return $this->hasOne(Price::class, 'stock_id', 'id')->withDefault(['purchase' => 0, 'wholesale' => 0, 'retail' => 0]);
+    }
+
 }

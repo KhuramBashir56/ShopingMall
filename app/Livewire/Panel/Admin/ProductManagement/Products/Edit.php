@@ -6,6 +6,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\UserAction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -80,6 +82,7 @@ class Edit extends Component
         $this->validate([
             'category_id' => ['required', 'integer', 'min:1'],
             'brand_id' => ['required', 'integer', 'min:1'],
+            'unit_id' => ['required', 'integer', 'min:1'],
             'name' => ['required', 'string', 'max:24', 'unique:products,name,' . $product_id],
             'description' => ['required', 'string', 'max:500'],
             'meta_keywords' => ['required', 'string', 'max:255'],
@@ -89,6 +92,7 @@ class Edit extends Component
         if ($product) {
             $product->category_id = $this->category_id;
             $product->brand_id = $this->brand_id;
+            $product->unit_id = $this->unit_id;
             $product->name = trim($this->name);
             if ($this->thumbnail) {
                 $this->validate([
@@ -107,6 +111,14 @@ class Edit extends Component
             $product->meta_keywords = $this->meta_keywords;
             $product->meta_description = $this->meta_description;
             $product->update();
+            UserAction::create([
+                'user_id' => Auth::id(),
+                'action' => 'product',
+                'action_id' => $product->id,
+                'type' => 'update',
+                'ip' => request()->ip(),
+                'device' => str_replace('"', '', request()->header('sec-ch-ua-platform'))
+            ]);
             session()->flash('success', 'Product information updated successfully.');
             $this->cancel();
             return $this->redirectRoute('admin.products.list', navigate: true);

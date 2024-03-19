@@ -36,4 +36,14 @@ class Product extends Model
     {
         return $this->belongsTo(ProductUnit::class, 'unit_id', 'id');
     }
+
+    public function stock()
+    {
+        return $this->hasMany(Stock::class, 'product_id', 'id');
+    }
+
+    public function price()
+    {
+        return $this->hasOne(Price::class, 'product_id', 'id')->withDefault(['purchase' => 0, 'wholesale' => 0, 'retail' => 0])->latest();
+    }
 }
