@@ -4,7 +4,10 @@
 <section class="grid gap-4">
     <x-ui.alert-messages />
     <x-panel.ui.page-header>
-        <span></span>
+        <div class="flex gap-4 flex-wrap">
+            <x-ui.links.primary href="{{ route('admin.stock-management.new-stock') }}" title="Add New Stock" />
+            <x-ui.links.primary href="{{ route('admin.stock-management.history') }}" title="View Stock History" />
+        </div>
         <x-ui.form.input-search wire:model.live="search" placeholder="Search Brands..." />
     </x-panel.ui.page-header>
     @if ($stock->count() < 1)

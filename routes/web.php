@@ -56,6 +56,11 @@ Route::middleware('auth')->group(function () {
             Route::get('{stock_id}/details', App\Livewire\Panel\Admin\StockManagement\Details::class)->name('details');
             Route::get('new-stock', App\Livewire\Panel\Admin\StockManagement\Create::class)->name('new-stock');
             Route::get('available-stock', App\Livewire\Panel\Admin\StockManagement\AvailableStock::class)->name('available-stock');
+            Route::prefix('invoicing')->name('invoicing.')->group(function () {
+                Route::get('create', App\Livewire\Panel\Admin\StockManagement\Invoicing\Create::class)->name('create');
+                Route::get('paid-invoices', App\Livewire\Panel\Admin\StockManagement\Invoicing\Paid::class)->name('paid-invoices');
+                Route::get('pending-invoices', App\Livewire\Panel\Admin\StockManagement\Invoicing\Pending::class)->name('pending-invoices');
+            });
         });
     });
 });
