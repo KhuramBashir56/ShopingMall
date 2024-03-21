@@ -12,11 +12,6 @@ use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithFileUploads;
 
     public $brand_id, $name, $categories, $category_id, $thumbnail, $oldThumbnail, $description, $keyword, $meta_keywords, $meta_description;
@@ -67,7 +62,7 @@ class Edit extends Component
     public function cancel()
     {
         $this->keywords = [];
-        $this->reset(['category_id','brand_id', 'name', 'thumbnail', 'description', 'keyword', 'meta_keywords', 'meta_description']);
+        $this->reset(['category_id', 'brand_id', 'name', 'thumbnail', 'description', 'keyword', 'meta_keywords', 'meta_description']);
         return $this->redirectRoute('admin.brands.list', navigate: true);
     }
 

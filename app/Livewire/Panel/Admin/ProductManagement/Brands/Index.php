@@ -10,11 +10,6 @@ use Livewire\WithoutUrlPagination;
 
 class Index extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithoutUrlPagination;
 
     public $search, $searchOption = '';

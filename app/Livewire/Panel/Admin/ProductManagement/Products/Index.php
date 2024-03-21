@@ -10,11 +10,6 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithPagination;
 
     public $search = '';

@@ -15,11 +15,11 @@
         </div>
     </x-panel.ui.page-header>
     <x-panel.ui.card>
-        <div class="w-full flex gap-4">
-            <div class="w-full sm:w-1/2 lg:w-1/3 aspect-square flex-col sm:flex-row">
+        <div class="w-full grid gap-4 grid-cols-1 md:grid-cols-3">
+            <div class="aspect-square">
                 <img src="{{ asset(config('app.img_url') . $category->thumbnail) }}" alt="{{ $category->title . 'thumbnail image' }}" class="w-full h-full">
             </div>
-            <div class="w-full sm:w-1/2 lg:w-2/3">
+            <div class="md:order-none order-1 md:col-span-2">
                 <x-ui.table.table>
                     <x-ui.table.tbody>
                         <x-ui.table.tr>
@@ -43,11 +43,9 @@
                     </x-ui.table.tbody>
                 </x-ui.table.table>
             </div>
-        </div>
-        <div class="w-full mt-4">
-            <h1 class="text-3xl mb-3">{{ $category->title }}</h1>
-            <p class="mb-3"><strong>Description: </strong> {{ $category->description }}</p>
-            <div class="mb-3">
+            <h1 class="text-3xl md-3 md:col-span-3">{{ $category->title }}</h1>
+            <p class="mb-3 md:order-none order-2 md:col-span-3"><strong>Description: </strong> {{ $category->description }}</p>
+            <div class="mb-3 md:order-none order-2 md:col-span-3">
                 <div class="flex gap-2 flex-wrap">
                     <strong>Meta Keyeords: </strong>
                     @foreach (explode(',', $category->meta_keywords) as $data)
@@ -55,7 +53,7 @@
                     @endforeach
                 </div>
             </div>
-            <p class="mb-3"><strong>Meta Description: </strong> {{ $category->meta_description }}</p>
+            <p class="mb-3 md:order-none order-2 md:col-span-3"><strong>Meta Description: </strong> {{ $category->meta_description }}</p>
         </div>
     </x-panel.ui.card>
 </section>

@@ -8,11 +8,6 @@ use Livewire\WithPagination;
 
 class AvailableStock extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithPagination;
 
     public $product = '';

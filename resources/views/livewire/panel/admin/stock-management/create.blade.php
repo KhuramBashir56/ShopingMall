@@ -69,7 +69,7 @@
             <div class="md:col-span-3 grid gap-x-6 gap-y-0 md:grid-cols-5">
                 <div class="md:col-span-2 relative">
                     <x-ui.form.label :title="__('Item Name')" :for="__('item_name')">
-                        <x-ui.form.input type="text" wire:model.live='item_name' wire:click="search_item" :for="__('item_name')" placeholder="Item name goes here..." maxlength="48" />
+                        <x-ui.form.input type="text" wire:model.live='item_name' wire:click="search_item" wire:blur='search_cancel' :for="__('item_name')" placeholder="Item name goes here..." maxlength="48" />
                         @error('item_name')
                             <x-ui.form.input-error :message="$message" />
                         @enderror

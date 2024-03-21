@@ -11,11 +11,6 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $supplier_name, $invoice, $delivery, $item_id, $item_name, $purchase_price, $purchase_total, $price, $whole_sale, $expiry_date, $remarks = '';
 
     public $items = [];
@@ -47,6 +42,11 @@ class Create extends Component
     public function search_item()
     {
         $this->products_list = true;
+    }
+
+    public function search_cancel()
+    {
+        $this->products_list = false;
     }
 
     public function select_item($item_id)
@@ -155,7 +155,14 @@ class Create extends Component
     public function render()
     {
         if (!empty($this->item_name)) {
-            $products = Product::where('status', 'published')->where('name', 'LIKE', $this->item_name . '%')->select('id', 'name')->orderBy('name', 'asc')->get();
+            $product = Product::where('status', 'published')->where('name', $this->item_name)->select('id', 'name')->first();
+            if (!empty($product)) {
+                $this->select_item($product->id);
+                $products = [];
+            } else {
+                $this->search_item();
+                $products = Product::where('status', 'published')->where('name', 'LIKE', $this->item_name . '%')->select('id', 'name')->orderBy('name', 'asc')->get();
+            }
         } else {
             $products = [];
         }

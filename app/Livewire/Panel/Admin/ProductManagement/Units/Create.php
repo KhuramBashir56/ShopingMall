@@ -9,11 +9,6 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $title, $code, $description = '';
 
     public function cancel()

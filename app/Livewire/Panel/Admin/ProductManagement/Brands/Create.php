@@ -11,11 +11,6 @@ use Livewire\WithFileUploads;
 
 class Create extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithFileUploads;
 
     public $category_id, $name, $thumbnail, $description, $keyword, $meta_keywords, $meta_description;

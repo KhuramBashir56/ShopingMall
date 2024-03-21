@@ -7,11 +7,6 @@ use Livewire\Component;
 
 class Details extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $category = '';
 
     public function mount($category_id)

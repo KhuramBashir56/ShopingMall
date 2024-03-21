@@ -10,12 +10,6 @@ use Livewire\Component;
 
 class ChangePrice extends Component
 {
-
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $product_id, $purchase, $wholesale, $retail = '';
 
     public function mount(Product $product)

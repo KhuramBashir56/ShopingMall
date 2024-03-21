@@ -7,11 +7,6 @@ use Livewire\Component;
 
 class Details extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $product;
 
     public function mount($product_id)

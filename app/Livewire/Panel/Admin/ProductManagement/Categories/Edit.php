@@ -11,11 +11,6 @@ use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithFileUploads;
 
     public $category_id, $title, $thumbnail, $oldThumbnail, $description, $keyword, $meta_keywords, $meta_description = '';

@@ -16,12 +16,19 @@
         <x-panel.menu-bar.sub-menu-item :title="__('Add New Product')" href="{{ route('admin.products.create') }}" :active="__('admin/products/create')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Products List')" href="{{ route('admin.products.list') }}" :active="__('admin/products/list')" />
     </x-panel.menu-bar.sub-menu>
-    <x-panel.menu-bar.sub-menu :title="__('Stock Management')" :icon="__('inventory')" :active="__('admin/stock-management/history admin/stock-management/new-stock admin/stock-management/available-stock')">
+    <x-panel.menu-bar.sub-menu :title="__('Stock Management')" :icon="__('inventory')" :active="__('admin/stock-management/history admin/stock-management/new-stock admin/stock-management/*/details admin/stock-management/available-stock')">
         <x-panel.menu-bar.sub-menu-item :title="__('Add New Stock')" href="{{ route('admin.stock-management.new-stock') }}" :active="__('admin/stock-management/new-stock')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Available Stock')" href="{{ route('admin.stock-management.available-stock') }}" :active="__('admin/stock-management/available-stock')" />
         <x-panel.menu-bar.sub-menu-item :title="__('Stock History')" href="{{ route('admin.stock-management.history') }}" :active="__('admin/stock-management/history')" />
     </x-panel.menu-bar.sub-menu>
+    <x-panel.menu-bar.menu-title :title="__('Inventory Management')" />
+    <x-panel.menu-bar.sub-menu :title="__('invoicing')" :icon="__('receipt_long')" :active="__('')">
+        <x-panel.menu-bar.sub-menu-item :title="__('Generate Invoice')" href="{{ route('admin.products.create') }}" :active="__('admin/products/create')" />
+        <x-panel.menu-bar.sub-menu-item :title="__('Paid Invoices')" href="{{ route('admin.products.list') }}" :active="__('admin/products/list')" />
+        <x-panel.menu-bar.sub-menu-item :title="__('Pending Invoices')" href="{{ route('admin.products.list') }}" :active="__('admin/products/list')" />
+    </x-panel.menu-bar.sub-menu>
     <x-panel.menu-bar.menu-title :title="__('Users Information')" />
-    <x-panel.menu-bar.menu-item :title="__('Users List')" href="{{ route('dashboard') }}" :icon="__('groups')" :active="__('dashboard')" />
-    <x-panel.menu-bar.menu-item :title="__('Newsletter Subscriptions')" href="{{ route('dashboard') }}" :icon="__('card_membership')" :active="__('dashboard')" />
+    <x-panel.menu-bar.menu-item :title="__('Users List')" href="{{ route('dashboard') }}" :icon="__('groups')" :active="__('')" />
+    <x-panel.menu-bar.menu-item :title="__('Newsletter Subscriptions')" href="{{ route('dashboard') }}" :icon="__('card_membership')" :active="__('')" />
+    <x-panel.menu-bar.menu-item :title="__('User Activities Log')" href="{{ route('dashboard') }}" :icon="__('card_membership')" :active="__('')" />
 @endcan

@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade')->onUpdate('cascade');
             $table->string('supplier_name', 48);
-            $table->timestamp('supplied_at');
+            $table->date('supplied_at');
             $table->bigInteger('invoice_Id');
             $table->integer('quantity');
             $table->date('expiry_date');
             $table->string('remarks', 255)->nullable();
             $table->enum('status', ['verified', 'unverified', 'deleted'])->default('unverified');
             $table->foreignId('verified_by')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamp('verified_at')->nullable();
+            $table->dateTime('verified_at')->nullable();
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

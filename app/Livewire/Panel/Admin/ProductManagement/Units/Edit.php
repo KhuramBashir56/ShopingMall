@@ -9,11 +9,6 @@ use Livewire\Component;
 
 class Edit extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     public $unit_id, $title, $code, $description = '';
 
     public function mount($unit_id)

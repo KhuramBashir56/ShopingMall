@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('stock-management')->name('stock-management.')->group(function () {
             Route::get('history', App\Livewire\Panel\Admin\StockManagement\History::class)->name('history');
+            Route::get('{stock_id}/details', App\Livewire\Panel\Admin\StockManagement\Details::class)->name('details');
             Route::get('new-stock', App\Livewire\Panel\Admin\StockManagement\Create::class)->name('new-stock');
             Route::get('available-stock', App\Livewire\Panel\Admin\StockManagement\AvailableStock::class)->name('available-stock');
         });

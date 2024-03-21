@@ -10,11 +10,6 @@ use Livewire\WithoutUrlPagination;
 
 class History extends Component
 {
-    public function __construct()
-    {
-        $this->authorize('admin');
-    }
-
     use WithoutUrlPagination;
 
     public $search = '';
@@ -28,6 +23,8 @@ class History extends Component
                 session()->flash('error', 'Stock not found.');
             } else {
                 $stock->status = 'verified';
+                $stock->verified_at = now();
+                $stock->verified_by = Auth::id();
                 $stock->update();
                 UserAction::create([
                     'user_id' => Auth::id(),
@@ -39,6 +36,15 @@ class History extends Component
                 ]);
                 session()->flash('success', 'Stock verified successfully.');
             }
+        }
+    }
+
+    public function details(Stock $stock)
+    {
+        if (!empty($stock)) {
+            return $this->redirectRoute('admin.stock-management.details', ['stock_id' => $stock->id], navigate: true);
+        } else {
+            session()->flash('error', 'Stock not found.');
         }
     }
 
