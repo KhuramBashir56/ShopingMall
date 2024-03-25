@@ -8,4 +8,6 @@
 <meta name="author" content="{{ config('app.author') }}" />
 <meta name="author-email" content="{{ config('app.author_email') }}" />
 <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png">
-<link rel="apple-touch-icon" href="{{ asset('assets/images/favicon.png') }}" type="image/png" />
+<link rel="apple-touch-icon" href="{{ asset('assets/images/app-logo.png') }}" type="image/png" />
+<meta name="theme-color" content="#f97316">
+<link rel="manifest" href="{{ asset('/manifest.json') }}">

@@ -1,0 +1,17 @@
+{
+    "name": "Mall of Karor",
+    "short_name": "MOK",
+    "start_url": "/",
+    "background_color": "#f97316",
+    "description": "Mall of Karor, a Shopping Mall in Dhaka, Bangladesh.",
+    "display": "fullscreen",
+    "theme_color": "#f97316",
+    "icons": [
+        {
+            "src": "/assets/images/app-logo.png",
+            "sizes": "325x325",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
